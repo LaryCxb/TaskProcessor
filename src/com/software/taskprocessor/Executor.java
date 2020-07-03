@@ -4,6 +4,7 @@ public class Executor implements Runnable, Callback {
 
     private int repetitionsLeft;
     private final long sleepTime;
+    private int errorNumber = 0;
 
     public Executor(int repetitions, long sleepTime) {
         this.repetitionsLeft = repetitions;
@@ -18,6 +19,7 @@ public class Executor implements Runnable, Callback {
                 execute(task);
             } catch (InterruptedException e) {
                 System.out.println("Waiting for task interrupted");
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -28,6 +30,7 @@ public class Executor implements Runnable, Callback {
             task.execute();
             onSuccess();
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             onFailure();
             if (repetitionsLeft > 0) {
                 waitAndRepeat(task);
@@ -53,11 +56,13 @@ public class Executor implements Runnable, Callback {
 
     @Override
     public void onSuccess() {
-        System.out.println("SUCCESS");
+        System.out.println("SUCCESS after " + errorNumber + " errors");
+        errorNumber = 0;
     }
 
     @Override
     public void onFailure() {
-        System.out.println("FAILURE");
+        errorNumber++;
+        System.out.println("FAILURE #" + errorNumber);
     }
 }
