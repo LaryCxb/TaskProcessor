@@ -1,8 +1,8 @@
 package com.software.taskprocessor;
 
-public interface Callback<T> {
+public interface Callback {
 
-    T onStart();
-    T onSuccess();
-    T onFailure();
+    void onStart();
+    void onSuccess();
+    void onFailure();
 }
