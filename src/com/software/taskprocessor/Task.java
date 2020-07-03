@@ -1,6 +1,6 @@
 package com.software.taskprocessor;
 
-public interface Task {
+public interface Task extends Callback<String> {
 
-    boolean execute();
+    void execute();
 }
