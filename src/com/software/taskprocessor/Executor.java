@@ -3,7 +3,7 @@ package com.software.taskprocessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Executor implements Runnable, Callback {
+public class Executor implements Runnable {
 
     private int repetitionsLeft;
     private final long sleepTime;
@@ -30,12 +30,13 @@ public class Executor implements Runnable, Callback {
 
     private void execute(Task task) {
         try {
-            onStart();
+            task.onStart();
             task.execute();
-            onSuccess();
+            task.onSuccess();
         } catch (Exception e) {
             logger.debug(e.getMessage());
-            onFailure();
+            errorNumber++;
+            task.onFailure();
             if (repetitionsLeft > 0) {
                 waitAndRepeat(task);
             }
@@ -51,22 +52,5 @@ public class Executor implements Runnable, Callback {
         }
         repetitionsLeft--;
         execute(task);
-    }
-
-    @Override
-    public void onStart() {
-        logger.info("START");
-    }
-
-    @Override
-    public void onSuccess() {
-        logger.info("SUCCESS after {} errors", errorNumber);
-        errorNumber = 0;
-    }
-
-    @Override
-    public void onFailure() {
-        errorNumber++;
-        logger.info("FAILURE #{}", errorNumber);
     }
 }
