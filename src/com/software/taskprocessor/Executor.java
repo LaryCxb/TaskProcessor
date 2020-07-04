@@ -5,12 +5,13 @@ import org.slf4j.LoggerFactory;
 
 public class Executor implements Runnable {
 
+    private final int repetitions;
     private int repetitionsLeft;
     private final long sleepTime;
-    private int errorNumber = 0;
     Logger logger = LoggerFactory.getLogger(getClass());
 
     public Executor(int repetitions, long sleepTime) {
+        this.repetitions = repetitions;
         this.repetitionsLeft = repetitions;
         this.sleepTime = sleepTime;
     }
@@ -18,6 +19,8 @@ public class Executor implements Runnable {
     @Override
     public void run() {
         while (true) {
+            repetitionsLeft = repetitions;
+            TaskProcessor.setErrorNumber(0);
             try {
                 Task task = (Task) TaskProcessor.getLinkedBlockingQueue().take();
                 execute(task);
@@ -35,7 +38,7 @@ public class Executor implements Runnable {
             task.onSuccess();
         } catch (Exception e) {
             logger.debug(e.getMessage());
-            errorNumber++;
+            TaskProcessor.setErrorNumber(TaskProcessor.getErrorNumber() + 1);
             task.onFailure();
             if (repetitionsLeft > 0) {
                 waitAndRepeat(task);
@@ -53,4 +56,5 @@ public class Executor implements Runnable {
         repetitionsLeft--;
         execute(task);
     }
+
 }
