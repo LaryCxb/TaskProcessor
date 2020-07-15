@@ -20,7 +20,6 @@ public class Executor implements Runnable {
     public void run() {
         while (true) {
             repetitionsLeft = repetitions;
-            TaskProcessor.setErrorNumber(0);
             try {
                 Task task = (Task) TaskProcessor.getLinkedBlockingQueue().take();
                 execute(task);
@@ -38,7 +37,7 @@ public class Executor implements Runnable {
             task.onSuccess();
         } catch (Exception e) {
             logger.debug(e.getMessage());
-            TaskProcessor.setErrorNumber(TaskProcessor.getErrorNumber() + 1);
+            task.updateErrorNumber(repetitions - repetitionsLeft + 1);
             task.onFailure();
             if (repetitionsLeft > 0) {
                 waitAndRepeat(task);

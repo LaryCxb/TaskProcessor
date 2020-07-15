@@ -3,6 +3,7 @@ package com.software.taskprocessor;
 public class ClientTask implements Task {
 
     String name;
+    int errorNumber = 0;
 
     public ClientTask(String name) {
         this.name = name;
@@ -12,6 +13,12 @@ public class ClientTask implements Task {
     public void execute() throws Exception {
         System.out.println("TASK EXECUTION");
         throw new Exception("EXCEPTION");
+    }
+
+    @Override
+    public int updateErrorNumber(int errorNumber) {
+        this.errorNumber = errorNumber;
+        return errorNumber;
     }
 
     @Override
@@ -26,6 +33,6 @@ public class ClientTask implements Task {
 
     @Override
     public void onFailure() {
-        System.out.println("FAILURE #" + TaskProcessor.getErrorNumber() + " " + name);
+        System.out.println("FAILURE #" + errorNumber + " " + name + "\n");
     }
 }

@@ -4,6 +4,8 @@ public interface Task extends Callback {
 
     void execute() throws Exception;
 
+    int updateErrorNumber(int errorNumber);
+
     @Override
     public void onStart();
 

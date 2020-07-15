@@ -5,7 +5,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TaskProcessor {
 
     private static final LinkedBlockingQueue<? super Task> linkedBlockingQueue = new LinkedBlockingQueue<>();
-    private static int errorNumber;
 
     private TaskProcessor() {
     }
@@ -21,13 +20,5 @@ public class TaskProcessor {
 
     public static LinkedBlockingQueue<? super Task> getLinkedBlockingQueue() {
         return linkedBlockingQueue;
-    }
-
-    public static int getErrorNumber() {
-        return errorNumber;
-    }
-
-    public static void setErrorNumber(int errorNumber) {
-        TaskProcessor.errorNumber = errorNumber;
     }
 }
