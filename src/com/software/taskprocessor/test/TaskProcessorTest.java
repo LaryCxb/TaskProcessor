@@ -29,8 +29,7 @@ class TaskProcessorTest {
     }
 
     @Test
-    void shouldEqualsWhenSameAdded() throws InterruptedException {
-        //given
+    void shouldBeEqualWhenSameTasksAdded() throws InterruptedException {
 
         //when
         linkedBlockingQueue.add(task1);
@@ -41,8 +40,7 @@ class TaskProcessorTest {
     }
 
     @Test
-    void shouldNotEqualsWhenDifferentAdded() throws InterruptedException {
-        //given
+    void shouldNotBeEqualWhenDifferentTasksAdded() throws InterruptedException {
 
         //when
         linkedBlockingQueue.add(task1);
