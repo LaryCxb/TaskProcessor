@@ -2,77 +2,54 @@ package com.software.taskprocessor.test;
 
 import com.software.taskprocessor.Task;
 import com.software.taskprocessor.TaskProcessor;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class TaskProcessorTest {
 
-    Task task1 = new Task() {
-        @Override
-        public void execute() throws Exception {
+    static FakedTask task1;
+    static FakedTask task2;
+    LinkedBlockingQueue<? super Task> linkedBlockingQueue;
 
-        }
+    @BeforeAll
+    public static void setupClass() {
+        task1 = new FakedTask();
+        task2 = new FakedTask();
+    }
 
-        @Override
-        public int updateErrorNumber(int errorNumber) {
-            return 0;
-        }
-
-        @Override
-        public void onStart() {
-
-        }
-
-        @Override
-        public void onSuccess() {
-
-        }
-
-        @Override
-        public void onFailure() {
-
-        }
-    };
-    Task task2 = new Task() {
-        @Override
-        public void execute() throws Exception {
-
-        }
-
-        @Override
-        public int updateErrorNumber(int errorNumber) {
-            return 0;
-        }
-
-        @Override
-        public void onStart() {
-
-        }
-
-        @Override
-        public void onSuccess() {
-
-        }
-
-        @Override
-        public void onFailure() {
-
-        }
-    };
+    @BeforeEach
+    public void setup() {
+        linkedBlockingQueue = new LinkedBlockingQueue<>();
+    }
 
     @Test
-    void addTaskTest() throws InterruptedException {
-        LinkedBlockingQueue<? super Task> linkedBlockingQueue = new LinkedBlockingQueue<>();
+    void shouldEqualsWhenSameAdded() throws InterruptedException {
+        //given
+
+        //when
         linkedBlockingQueue.add(task1);
-        linkedBlockingQueue.add(task2);
-        TaskProcessor.addTask(task1);
         TaskProcessor.addTask(task1);
 
+        //then
         assertEquals(linkedBlockingQueue.take(), TaskProcessor.getLinkedBlockingQueue().take());
-        assertNotEquals(linkedBlockingQueue.take(), TaskProcessor.getLinkedBlockingQueue().take());
-        assertTrue(TaskProcessor.getLinkedBlockingQueue().isEmpty());
     }
+
+    @Test
+    void shouldNotEqualsWhenDifferentAdded() throws InterruptedException {
+        //given
+
+        //when
+        linkedBlockingQueue.add(task1);
+        TaskProcessor.addTask(task2);
+
+        //then
+        assertNotEquals(linkedBlockingQueue.take(), TaskProcessor.getLinkedBlockingQueue().take());
+    }
+
 }
