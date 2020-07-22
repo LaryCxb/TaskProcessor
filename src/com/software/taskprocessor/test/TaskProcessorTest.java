@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TaskProcessorTest {
 
@@ -74,5 +73,6 @@ class TaskProcessorTest {
 
         assertEquals(linkedBlockingQueue.take(), TaskProcessor.getLinkedBlockingQueue().take());
         assertNotEquals(linkedBlockingQueue.take(), TaskProcessor.getLinkedBlockingQueue().take());
+        assertTrue(TaskProcessor.getLinkedBlockingQueue().isEmpty());
     }
 }
