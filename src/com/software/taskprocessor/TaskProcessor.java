@@ -10,7 +10,7 @@ public class TaskProcessor {
     }
 
     public static void start(int repetitions, long sleepTime) {
-        Thread executor = new Thread(new Executor(repetitions, sleepTime));
+        Thread executor = new Thread(new QueueExecutor(repetitions, sleepTime));
         executor.start();
     }
 
